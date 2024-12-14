@@ -7,6 +7,7 @@ namespace Todo.Infrastructure.Persistance;
 internal class UserDbContext : DbContext
 {
     private readonly IConfiguration _configuration;
+
     public UserDbContext(DbContextOptions<UserDbContext> options, IConfiguration configuration) : base(options)
     {
         _configuration = configuration;

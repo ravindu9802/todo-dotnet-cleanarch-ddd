@@ -6,8 +6,8 @@ namespace Todo.Application.Users.Add;
 
 internal class AddUserCommandHandler : IRequestHandler<AddUserCommand, Guid?>
 {
-    private readonly IUserRepository _userRepository;
     private readonly IUserUoW _uoW;
+    private readonly IUserRepository _userRepository;
 
     public AddUserCommandHandler(IUserRepository userRepository, IUserUoW uoW)
     {

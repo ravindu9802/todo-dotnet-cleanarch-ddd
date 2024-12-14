@@ -1,74 +1,69 @@
-﻿using System;
+﻿#nullable disable
+
 using Microsoft.EntityFrameworkCore.Migrations;
 
-#nullable disable
+namespace Todo.Infrastructure.Migrations.Todos;
 
-namespace Todo.Infrastructure.Migrations.Todos
+/// <inheritdoc />
+public partial class Init_Todos : Migration
 {
     /// <inheritdoc />
-    public partial class Init_Todos : Migration
+    protected override void Up(MigrationBuilder migrationBuilder)
     {
-        /// <inheritdoc />
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.EnsureSchema(
-                name: "todos");
+        migrationBuilder.EnsureSchema(
+            "todos");
 
-            migrationBuilder.CreateTable(
-                name: "TodoGroups",
-                schema: "todos",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    GroupTitle = table.Column<string>(type: "text", nullable: false),
-                    CreateAtUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_TodoGroups", x => x.Id);
-                });
+        migrationBuilder.CreateTable(
+            "TodoGroups",
+            schema: "todos",
+            columns: table => new
+            {
+                Id = table.Column<Guid>("uuid", nullable: false),
+                GroupTitle = table.Column<string>("text", nullable: false),
+                CreateAtUtc = table.Column<DateTime>("timestamp with time zone", nullable: false)
+            },
+            constraints: table => { table.PrimaryKey("PK_TodoGroups", x => x.Id); });
 
-            migrationBuilder.CreateTable(
-                name: "Todos",
-                schema: "todos",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uuid", nullable: false),
-                    Title = table.Column<string>(type: "text", nullable: false),
-                    Description = table.Column<string>(type: "text", nullable: true),
-                    IsCompleted = table.Column<bool>(type: "boolean", nullable: false),
-                    UserId = table.Column<Guid>(type: "uuid", nullable: false),
-                    CreatedAtUtc = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    TodoGroupId = table.Column<Guid>(type: "uuid", nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Todos", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Todos_TodoGroups_TodoGroupId",
-                        column: x => x.TodoGroupId,
-                        principalSchema: "todos",
-                        principalTable: "TodoGroups",
-                        principalColumn: "Id");
-                });
+        migrationBuilder.CreateTable(
+            "Todos",
+            schema: "todos",
+            columns: table => new
+            {
+                Id = table.Column<Guid>("uuid", nullable: false),
+                Title = table.Column<string>("text", nullable: false),
+                Description = table.Column<string>("text", nullable: true),
+                IsCompleted = table.Column<bool>("boolean", nullable: false),
+                UserId = table.Column<Guid>("uuid", nullable: false),
+                CreatedAtUtc = table.Column<DateTime>("timestamp with time zone", nullable: false),
+                TodoGroupId = table.Column<Guid>("uuid", nullable: true)
+            },
+            constraints: table =>
+            {
+                table.PrimaryKey("PK_Todos", x => x.Id);
+                table.ForeignKey(
+                    "FK_Todos_TodoGroups_TodoGroupId",
+                    x => x.TodoGroupId,
+                    principalSchema: "todos",
+                    principalTable: "TodoGroups",
+                    principalColumn: "Id");
+            });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Todos_TodoGroupId",
-                schema: "todos",
-                table: "Todos",
-                column: "TodoGroupId");
-        }
+        migrationBuilder.CreateIndex(
+            "IX_Todos_TodoGroupId",
+            schema: "todos",
+            table: "Todos",
+            column: "TodoGroupId");
+    }
 
-        /// <inheritdoc />
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropTable(
-                name: "Todos",
-                schema: "todos");
+    /// <inheritdoc />
+    protected override void Down(MigrationBuilder migrationBuilder)
+    {
+        migrationBuilder.DropTable(
+            "Todos",
+            "todos");
 
-            migrationBuilder.DropTable(
-                name: "TodoGroups",
-                schema: "todos");
-        }
+        migrationBuilder.DropTable(
+            "TodoGroups",
+            "todos");
     }
 }

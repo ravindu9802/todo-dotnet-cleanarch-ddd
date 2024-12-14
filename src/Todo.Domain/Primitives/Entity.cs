@@ -2,11 +2,20 @@
 
 public abstract class Entity : IEquatable<Entity>
 {
-    public Guid Id { get; init; }
-
     protected Entity(Guid id)
     {
         Id = id;
+    }
+
+    public Guid Id { get; init; }
+
+    public bool Equals(Entity? other)
+    {
+        if (other is null) return false;
+
+        if (other.GetType() != GetType()) return false;
+
+        return other.Id == Id;
     }
 
     public override bool Equals(object? obj)
@@ -25,15 +34,6 @@ public abstract class Entity : IEquatable<Entity>
         return Id.GetHashCode();
     }
 
-    public bool Equals(Entity? other)
-    {
-        if (other is null) return false;
-
-        if (other.GetType() != GetType()) return false;
-
-        return other.Id == Id;
-    }
-
     public static bool operator ==(Entity? left, Entity? right)
     {
         return left is not null && right is not null && left.Id == right.Id;
@@ -43,7 +43,4 @@ public abstract class Entity : IEquatable<Entity>
     {
         return !(left == right);
     }
-
 }
-
-

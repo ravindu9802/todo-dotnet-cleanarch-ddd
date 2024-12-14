@@ -2,6 +2,11 @@
 
 public abstract class ValueObject : IEquatable<ValueObject>
 {
+    public bool Equals(ValueObject? other)
+    {
+        return other is ValueObject && AreValuesEqual(other);
+    }
+
     public abstract IEnumerable<object> GetAtomicValues();
 
     public override bool Equals(object? obj)
@@ -17,10 +22,5 @@ public abstract class ValueObject : IEquatable<ValueObject>
     public bool AreValuesEqual(ValueObject other)
     {
         return GetAtomicValues().SequenceEqual(other.GetAtomicValues());
-    }
-
-    public bool Equals(ValueObject? other)
-    {
-        return other is ValueObject && AreValuesEqual(other);
     }
 }

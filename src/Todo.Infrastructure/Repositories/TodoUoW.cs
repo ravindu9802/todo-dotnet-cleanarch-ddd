@@ -6,6 +6,7 @@ namespace Todo.Infrastructure.Repositories;
 internal class TodoUoW : ITodoUoW
 {
     private readonly TodoDbContext _context;
+
     public TodoUoW(TodoDbContext context)
     {
         _context = context;

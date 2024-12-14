@@ -5,7 +5,8 @@ namespace Todo.Application.Extensions;
 
 public static class ServiceCollectionExtension
 {
-    public static IServiceCollection ApplicationLayerExtension(this IServiceCollection services, IConfiguration configuration)
+    public static IServiceCollection ApplicationLayerExtension(this IServiceCollection services,
+        IConfiguration configuration)
     {
         services.AddMediatR(options =>
         {

@@ -4,7 +4,10 @@ namespace Todo.Domain.Entities;
 
 public class User : Entity
 {
-    private User(Guid id) : base(id) { }
+    private User(Guid id) : base(id)
+    {
+    }
+
     private User(Guid id, string firstName, string lastName, DateTime createdAtUtc) : base(id)
     {
         FirstName = firstName;
@@ -18,7 +21,8 @@ public class User : Entity
 
     public static User Create(string firstName, string lastName)
     {
-        if (string.IsNullOrWhiteSpace(firstName)) throw new ArgumentException("First Name cannot be empty.", nameof(firstName));
+        if (string.IsNullOrWhiteSpace(firstName))
+            throw new ArgumentException("First Name cannot be empty.", nameof(firstName));
 
         return new User(Guid.CreateVersion7(), firstName, lastName, DateTime.UtcNow);
     }

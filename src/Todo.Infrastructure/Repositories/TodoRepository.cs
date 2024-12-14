@@ -7,12 +7,14 @@ namespace Todo.Infrastructure.Repositories;
 internal class TodoRepository : ITodoRepository
 {
     private readonly TodoDbContext _context;
+
     public TodoRepository(TodoDbContext context)
     {
         _context = context;
     }
 
-    public async Task<bool> ChangeTodoStatusAsync(Guid id, bool isCompleted, CancellationToken cancellationToken = default)
+    public async Task<bool> ChangeTodoStatusAsync(Guid id, bool isCompleted,
+        CancellationToken cancellationToken = default)
     {
         var todo = await _context.Todos
             .FindAsync(id, cancellationToken);
@@ -36,7 +38,8 @@ internal class TodoRepository : ITodoRepository
             .ToListAsync(cancellationToken);
     }
 
-    public async Task<List<Domain.Entities.Todo>> GetAllByUserAsync(Guid userId, CancellationToken cancellationToken = default)
+    public async Task<List<Domain.Entities.Todo>> GetAllByUserAsync(Guid userId,
+        CancellationToken cancellationToken = default)
     {
         return await _context.Todos
             .AsNoTracking()
@@ -47,9 +50,6 @@ internal class TodoRepository : ITodoRepository
     public async Task<Domain.Entities.Todo?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
     {
         return await _context.Todos
-            .AsNoTracking()
             .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
     }
-
-
 }
