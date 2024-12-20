@@ -1,13 +1,24 @@
 using MediatR;
 using Scalar.AspNetCore;
 using Serilog;
+using Todo.Api.Migrations;
 using Todo.Application.Behaviours;
 using Todo.Application.Extensions;
 using Todo.Infrastructure.Extensions;
+using Todo.IntegrationEvents.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAny", builder =>
+    {
+        builder.AllowAnyOrigin();
+        builder.AllowAnyHeader();
+        builder.AllowAnyMethod();
+    });
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -16,6 +27,7 @@ builder.Services.AddOpenApi();
 builder.Services
     .ApplicationLayerExtension(builder.Configuration)
     .InfrastructureLayerExtension(builder.Configuration);
+//.IntegrationEventExtension(builder.Configuration);
 
 builder.Host.UseSerilog((context, config) => { config.ReadFrom.Configuration(context.Configuration); });
 
@@ -33,11 +45,14 @@ if (app.Environment.IsDevelopment())
         options.WithTitle("Todo API");
         options.WithTheme(ScalarTheme.BluePlanet);
     });
+    app.ApplyMigrations();
 }
 
 app.UseSerilogRequestLogging();
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAny");
 
 app.UseAuthorization();
 

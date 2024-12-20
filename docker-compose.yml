@@ -1,0 +1,34 @@
+services:
+  todo.api:
+    image: ${DOCKER_REGISTRY-}todoapi
+    container_name: todo.api
+    build:
+      context: .
+      dockerfile: src/Todo.Api/Dockerfile
+    ports:
+       - "8080:8080"
+       - "8081:8081"
+
+  todo.database:
+    image:  postgres:latest
+    container_name: todo.database
+    volumes:
+        - "./.containers/database:/var/lib/postgresql/data"
+    environment:
+        - POSTGRES_DB=todos
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=postgres
+    ports:
+        - "5432:5432"
+
+  todo.seq:
+    image:  datalust/seq:latest
+    container_name: todo.seq
+    volumes:
+        - "./.containers/seq:/data"
+    environment:
+        - ACCEPT_EULA=Y
+    ports:
+        - "5341:5341" 
+        - "5001:80" 
+  

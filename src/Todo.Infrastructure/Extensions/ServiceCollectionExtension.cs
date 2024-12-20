@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Todo.Domain.Repositories;
-using Todo.Infrastructure.Persistance;
+using Todo.Infrastructure.Persistence;
 using Todo.Infrastructure.Repositories;
 
 namespace Todo.Infrastructure.Extensions;

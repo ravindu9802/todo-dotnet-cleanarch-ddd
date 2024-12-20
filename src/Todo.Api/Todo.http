@@ -1,0 +1,31 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+
+### Create a new user
+POST https://localhost:8081/api/Users
+Content-Type: application/json
+
+{
+  "firstName": "ravindu",
+  "lastName": "rasanjana"
+}
+
+### Create a new todo
+POST https://localhost:8081/api/Todos 
+Content-Type: application/json
+
+{
+  "title": "new first todo",
+  "description": "this is the first todo",
+  "userId": "0193d62c-17a0-716a-9449-02f7ca323846"
+}
+
+### Get all todos by user 
+GET https://localhost:8081/api/Todos/0193d62c-17a0-716a-9449-02f7ca323846
+
+### Change todo status
+POST https://localhost:8081/api/Todos/change-status/0193c64c-7c6b-7f61-a0fd-e90ca0fcd07d
+Content-Type: application/json
+
+{
+  "isCompleted": true
+}

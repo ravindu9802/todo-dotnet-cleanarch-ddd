@@ -14,6 +14,6 @@ internal class GetAllTodosQueryHandler : IRequestHandler<GetAllTodosQuery, List<
 
     public async Task<List<Domain.Entities.Todo>> Handle(GetAllTodosQuery request, CancellationToken cancellationToken)
     {
-        return await _todoRepository.GetAllAsync(cancellationToken);
+        return await _todoRepository.GetAllByUserAsync(request.UserId, cancellationToken);
     }
 }

@@ -2,9 +2,9 @@
 using Microsoft.Extensions.Configuration;
 using Todo.Domain.Entities;
 
-namespace Todo.Infrastructure.Persistance;
+namespace Todo.Infrastructure.Persistence;
 
-internal class TodoDbContext : DbContext
+public class TodoDbContext : DbContext
 {
     private readonly IConfiguration _configuration;
 
