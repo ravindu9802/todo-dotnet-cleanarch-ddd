@@ -1,3 +1,5 @@
-﻿namespace Todo.Application.Users.Add;
+﻿using Todo.Domain.Enums;
 
-public record AddUserRequest(string FirstName, string LastName);
+namespace Todo.Application.Users.Add;
+
+public record AddUserRequest(string FirstName, string LastName, string Email, UserRole Role);

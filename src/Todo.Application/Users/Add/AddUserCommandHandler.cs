@@ -18,7 +18,7 @@ internal class AddUserCommandHandler : IRequestHandler<AddUserCommand, Result<Gu
 
     public async Task<Result<Guid>> Handle(AddUserCommand request, CancellationToken cancellationToken)
     {
-        var result = User.Create(request.FirstName, request.LastName);
+        var result = User.Create(request.FirstName, request.LastName, request.Email, request.Role);
 
         if (result.IsFailure) return Result.Failure<Guid>(result.Error);
 

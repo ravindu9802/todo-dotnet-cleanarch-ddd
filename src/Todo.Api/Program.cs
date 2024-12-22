@@ -2,6 +2,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authentication.BearerToken;
 using Scalar.AspNetCore;
 using Serilog;
+using Todo.Api.Authentication;
 using Todo.Api.Migrations;
 using Todo.Application.Behaviours;
 using Todo.Application.Extensions;
@@ -36,6 +37,8 @@ builder.Services
     .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehaviour<,>));
 
 // Configure JwtBearer authentication
+builder.Services.ConfigureOptions<JwtOptionsSetup>();
+builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 builder.Services
     .AddAuthentication(BearerTokenDefaults.AuthenticationScheme)
     .AddBearerToken();
@@ -60,9 +63,9 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowAny");
 
-//app.UseAuthentication();
+app.UseAuthentication();
 
-//app.UseAuthorization();
+app.UseAuthorization();
 
 app.MapControllers();
 

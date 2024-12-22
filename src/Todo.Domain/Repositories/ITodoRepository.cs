@@ -7,6 +7,6 @@ public interface ITodoRepository
     Task<List<Entities.Todo>> GetAllByUserAsync(Guid userId, CancellationToken cancellationToken = default);
     Task<Entities.Todo?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default);
     Task<bool> ChangeTodoStatusAsync(Guid id, bool isCompleted, CancellationToken cancellationToken = default);
-
-    //Task CreateTodoGroud();
+    Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken);
+    Task<bool> DeleteAllByUserAsync(Guid userId, CancellationToken cancellationToken);
 }

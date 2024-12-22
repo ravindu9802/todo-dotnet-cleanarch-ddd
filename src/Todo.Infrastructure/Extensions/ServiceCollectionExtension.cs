@@ -1,7 +1,9 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Todo.Domain.Abstractions;
 using Todo.Domain.Repositories;
+using Todo.Infrastructure.Authentication;
 using Todo.Infrastructure.Persistence;
 using Todo.Infrastructure.Repositories;
 
@@ -26,6 +28,7 @@ public static class ServiceCollectionExtension
         services.AddScoped<ITodoUoW, TodoUoW>();
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserUoW, UserUoW>();
+        services.AddScoped<IJwtProvider, JwtProvider>();
 
         return services;
     }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Todo.Domain.Entities;
 using Todo.Domain.Repositories;
 using Todo.Infrastructure.Persistence;
 
@@ -21,6 +22,22 @@ internal class TodoRepository : ITodoRepository
         if (todo is null) return false;
 
         todo.ChangeStatus(isCompleted);
+        return true;
+    }
+
+    public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken)
+    {
+        var todo = await _context.Todos.Where(t => t.Id == id).FirstOrDefaultAsync(cancellationToken);
+        if (todo is null) return false;
+
+        _context.Todos.Remove(todo);
+        return true;
+    }
+
+    public async Task<bool> DeleteAllByUserAsync(Guid userId, CancellationToken cancellationToken)
+    {
+        var todo = await _context.Todos.Where(t => t.UserId == userId).ToListAsync(cancellationToken);
+        _context.Todos.RemoveRange(todo);
         return true;
     }
 
