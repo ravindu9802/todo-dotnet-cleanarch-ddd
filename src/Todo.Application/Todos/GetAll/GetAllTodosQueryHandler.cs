@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using Todo.Domain.Primitives;
 using Todo.Domain.Repositories;
 
 namespace Todo.Application.Todos.GetAll;
 
-internal class GetAllTodosQueryHandler : IRequestHandler<GetAllTodosQuery, List<Domain.Entities.Todo>>
+internal class GetAllTodosQueryHandler : IRequestHandler<GetAllTodosQuery, Result<List<Domain.Entities.Todo>>>
 {
     private readonly ITodoRepository _todoRepository;
 
@@ -12,8 +13,9 @@ internal class GetAllTodosQueryHandler : IRequestHandler<GetAllTodosQuery, List<
         _todoRepository = todoRepository;
     }
 
-    public async Task<List<Domain.Entities.Todo>> Handle(GetAllTodosQuery request, CancellationToken cancellationToken)
+    public async Task<Result<List<Domain.Entities.Todo>>> Handle(GetAllTodosQuery request, CancellationToken cancellationToken)
     {
-        return await _todoRepository.GetAllByUserAsync(request.UserId, cancellationToken);
+        var results = await _todoRepository.GetAllByUserAsync(request.UserId, cancellationToken);
+        return Result.Success(results);
     }
 }

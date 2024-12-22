@@ -24,11 +24,12 @@ public class Todo : Entity
     public Guid UserId { get; private set; }
     public DateTime CreatedAtUtc { get; private set; }
 
-    public static Todo Create(string title, string description, Guid userId)
+    public static Result<Todo> Create(string title, string description, Guid userId)
     {
-        if (string.IsNullOrWhiteSpace(title)) throw new ArgumentException("Title cannot be empty.", nameof(title));
+        if (string.IsNullOrWhiteSpace(title)) return Result.Failure<Todo>(new Error("Todo.EmptyTitle","Title cannot be empty."));
 
-        return new Todo(Guid.CreateVersion7(), title, description, false, userId, DateTime.UtcNow);
+        Todo todo = new Todo(Guid.CreateVersion7(), title, description, false, userId, DateTime.UtcNow);
+        return Result.Success(todo);
     }
 
     public void ChangeStatus(bool isCompleted)

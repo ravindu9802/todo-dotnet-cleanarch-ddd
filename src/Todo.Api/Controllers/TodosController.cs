@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Application.Todos.Add;
 using Todo.Application.Todos.GetAll;
@@ -17,13 +18,14 @@ public class TodosController : ControllerBase
         _sender = sender;
     }
 
+    //[Authorize]
     [HttpGet]
     [Route("{userId}")]
     public async Task<IActionResult> GetAll([FromRoute] Guid userId)
     {
         var query = new GetAllTodosQuery(userId);
         var res = await _sender.Send(query);
-        return Ok(res);
+        return res.IsSuccess ? Ok(res.Value) : BadRequest(res.Error);
     }
 
     [HttpPost]
@@ -31,7 +33,7 @@ public class TodosController : ControllerBase
     {
         var command = new AddTodoCommand(todoRequest.Title, todoRequest.Description, todoRequest.UserId);
         var res = await _sender.Send(command);
-        return Ok(res);
+        return res.IsSuccess ? Ok(res.Value) : BadRequest(res.Error);
     }
 
     [HttpPost]
@@ -41,6 +43,6 @@ public class TodosController : ControllerBase
     {
         var command = new ToggleStatusTodoCommand(todoId, todoRequest.IsCompleted);
         var res = await _sender.Send(command);
-        return Ok(res);
+        return res.IsSuccess ? Ok(res.Value) : BadRequest(res.Error);
     }
 }

@@ -20,6 +20,6 @@ public class UsersController : ControllerBase
     {
         var command = new AddUserCommand(userRequest.FirstName, userRequest.LastName);
         var res = await _sender.Send(command);
-        return Ok(res);
+        return res.IsSuccess ? Ok(res.Value) : BadRequest(res.Error);
     }
 }

@@ -19,11 +19,12 @@ public class User : Entity
     public string? LastName { get; private set; }
     public DateTime CreatedAtUtc { get; private set; }
 
-    public static User Create(string firstName, string lastName)
+    public static Result<User> Create(string firstName, string lastName)
     {
         if (string.IsNullOrWhiteSpace(firstName))
-            throw new ArgumentException("First Name cannot be empty.", nameof(firstName));
+            return Result.Failure<User>(new Error("User.FirstNameNull", "First Name cannot be empty."));
 
-        return new User(Guid.CreateVersion7(), firstName, lastName, DateTime.UtcNow);
+        User user = new User(Guid.CreateVersion7(), firstName, lastName, DateTime.UtcNow);
+        return Result.Success(user);
     }
 }

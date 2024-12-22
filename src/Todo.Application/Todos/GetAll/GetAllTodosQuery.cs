@@ -1,5 +1,6 @@
 ﻿using MediatR;
+using Todo.Domain.Primitives;
 
 namespace Todo.Application.Todos.GetAll;
 
-public record GetAllTodosQuery(Guid UserId) : IRequest<List<Domain.Entities.Todo>>;
+public record GetAllTodosQuery(Guid UserId) : IRequest<Result<List<Domain.Entities.Todo>>>;

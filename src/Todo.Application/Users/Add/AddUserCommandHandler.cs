@@ -1,10 +1,11 @@
 ﻿using MediatR;
 using Todo.Domain.Entities;
+using Todo.Domain.Primitives;
 using Todo.Domain.Repositories;
 
 namespace Todo.Application.Users.Add;
 
-internal class AddUserCommandHandler : IRequestHandler<AddUserCommand, Guid?>
+internal class AddUserCommandHandler : IRequestHandler<AddUserCommand, Result<Guid>>
 {
     private readonly IUserUoW _uoW;
     private readonly IUserRepository _userRepository;
@@ -15,11 +16,15 @@ internal class AddUserCommandHandler : IRequestHandler<AddUserCommand, Guid?>
         _uoW = uoW;
     }
 
-    public async Task<Guid?> Handle(AddUserCommand request, CancellationToken cancellationToken)
+    public async Task<Result<Guid>> Handle(AddUserCommand request, CancellationToken cancellationToken)
     {
-        var user = User.Create(request.FirstName, request.LastName);
-        await _userRepository.CreateUserAsync(user, cancellationToken);
+        var result = User.Create(request.FirstName, request.LastName);
+
+        if (result.IsFailure) return Result.Failure<Guid>(result.Error);
+
+        await _userRepository.CreateUserAsync(result.Value, cancellationToken);
         await _uoW.SaveChangesAsync(cancellationToken);
-        return user.Id;
+
+        return Result.Success(result.Value.Id);
     }
 }

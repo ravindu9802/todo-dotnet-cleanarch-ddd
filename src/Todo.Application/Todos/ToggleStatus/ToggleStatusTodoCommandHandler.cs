@@ -1,9 +1,10 @@
 ﻿using MediatR;
+using Todo.Domain.Primitives;
 using Todo.Domain.Repositories;
 
 namespace Todo.Application.Todos.ToggleStatus;
 
-internal class ToggleStatusTodoCommandHandler : IRequestHandler<ToggleStatusTodoCommand, bool>
+internal class ToggleStatusTodoCommandHandler : IRequestHandler<ToggleStatusTodoCommand, Result<bool>>
 {
     private readonly ITodoRepository _todoRepository;
     private readonly ITodoUoW _uoW;
@@ -14,13 +15,14 @@ internal class ToggleStatusTodoCommandHandler : IRequestHandler<ToggleStatusTodo
         _todoRepository = todoRepository;
     }
 
-    public async Task<bool> Handle(ToggleStatusTodoCommand request, CancellationToken cancellationToken)
+    public async Task<Result<bool>> Handle(ToggleStatusTodoCommand request, CancellationToken cancellationToken)
     {
         var todo = await _todoRepository.GetByIdAsync(request.Id, cancellationToken);
-        if (todo is null) return false;
+        if (todo is null) return Result.Failure<bool>(new Error("Todo.NotFound", $"Todo for id {request.Id} not found."));
 
         todo.ChangeStatus(request.IsCompleted);
         await _uoW.SaveChangesAsync(cancellationToken);
-        return true;
+
+        return Result.Success(true);
     }
 }

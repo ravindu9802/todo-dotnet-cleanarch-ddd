@@ -1,4 +1,5 @@
 using MediatR;
+using Microsoft.AspNetCore.Authentication.BearerToken;
 using Scalar.AspNetCore;
 using Serilog;
 using Todo.Api.Migrations;
@@ -34,6 +35,11 @@ builder.Host.UseSerilog((context, config) => { config.ReadFrom.Configuration(con
 builder.Services
     .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehaviour<,>));
 
+// Configure JwtBearer authentication
+builder.Services
+    .AddAuthentication(BearerTokenDefaults.AuthenticationScheme)
+    .AddBearerToken();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -54,7 +60,9 @@ app.UseHttpsRedirection();
 
 app.UseCors("AllowAny");
 
-app.UseAuthorization();
+//app.UseAuthentication();
+
+//app.UseAuthorization();
 
 app.MapControllers();
 

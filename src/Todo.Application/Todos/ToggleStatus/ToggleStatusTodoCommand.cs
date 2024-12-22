@@ -1,5 +1,6 @@
 ﻿using MediatR;
+using Todo.Domain.Primitives;
 
 namespace Todo.Application.Todos.ToggleStatus;
 
-public record ToggleStatusTodoCommand(Guid Id, bool IsCompleted) : IRequest<bool>;
+public record ToggleStatusTodoCommand(Guid Id, bool IsCompleted) : IRequest<Result<bool>>;
