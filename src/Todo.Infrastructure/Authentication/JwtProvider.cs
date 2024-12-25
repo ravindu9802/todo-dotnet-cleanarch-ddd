@@ -20,7 +20,8 @@ internal class JwtProvider : IJwtProvider
         var claims = new Claim[]{
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Name, user.Id.ToString()),
-            new("Role", user.Role.ToString())
+            new("role", user.Role.ToString().ToLower()),
+            new("delete", "true")
         };
 
         var signingCredentials = new SigningCredentials(

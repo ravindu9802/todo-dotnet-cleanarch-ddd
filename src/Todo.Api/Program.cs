@@ -1,5 +1,5 @@
 using MediatR;
-using Microsoft.AspNetCore.Authentication.BearerToken;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Scalar.AspNetCore;
 using Serilog;
 using Todo.Api.Authentication;
@@ -7,7 +7,6 @@ using Todo.Api.Migrations;
 using Todo.Application.Behaviours;
 using Todo.Application.Extensions;
 using Todo.Infrastructure.Extensions;
-using Todo.IntegrationEvents.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -29,9 +28,10 @@ builder.Services.AddOpenApi();
 builder.Services
     .ApplicationLayerExtension(builder.Configuration)
     .InfrastructureLayerExtension(builder.Configuration);
-//.IntegrationEventExtension(builder.Configuration);
 
-builder.Host.UseSerilog((context, config) => { config.ReadFrom.Configuration(context.Configuration); });
+builder.Host
+    .UseSerilog((context, config) =>
+        { config.ReadFrom.Configuration(context.Configuration); });
 
 builder.Services
     .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehaviour<,>));
@@ -40,8 +40,11 @@ builder.Services
 builder.Services.ConfigureOptions<JwtOptionsSetup>();
 builder.Services.ConfigureOptions<JwtBearerOptionsSetup>();
 builder.Services
-    .AddAuthentication(BearerTokenDefaults.AuthenticationScheme)
-    .AddBearerToken();
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer();
+
+builder.Services.ConfigureOptions<AuthorizationPolicySetup>();
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 

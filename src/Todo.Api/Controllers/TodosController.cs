@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Application.Todos.Add;
+using Todo.Application.Todos.Delete;
 using Todo.Application.Todos.GetAll;
 using Todo.Application.Todos.ToggleStatus;
 
@@ -18,7 +19,7 @@ public class TodosController : ControllerBase
         _sender = sender;
     }
 
-    //[Authorize]
+    [Authorize]
     [HttpGet]
     [Route("{userId}")]
     public async Task<IActionResult> GetAll([FromRoute] Guid userId)
@@ -28,6 +29,7 @@ public class TodosController : ControllerBase
         return res.IsSuccess ? Ok(res.Value) : BadRequest(res.Error);
     }
 
+    [Authorize]
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] AddTodoRequest todoRequest)
     {
@@ -36,6 +38,7 @@ public class TodosController : ControllerBase
         return res.IsSuccess ? Ok(res.Value) : BadRequest(res.Error);
     }
 
+    [Authorize]
     [HttpPost]
     [Route("change-status/{todoId}")]
     public async Task<IActionResult> ChangeStatus([FromRoute] Guid todoId,
@@ -44,5 +47,15 @@ public class TodosController : ControllerBase
         var command = new ToggleStatusTodoCommand(todoId, todoRequest.IsCompleted);
         var res = await _sender.Send(command);
         return res.IsSuccess ? Ok(res.Value) : BadRequest(res.Error);
+    }
+
+    [Authorize(Policy = "DeletePolicy")]
+    [HttpDelete]
+    [Route("{todoId}")]
+    public async Task<IActionResult> ChangeStatus([FromRoute] Guid todoId)
+    {
+        var command = new DeleteTodoCommand(todoId);
+        var res = await _sender.Send(command);
+        return res.IsSuccess ? Ok() : BadRequest(res.Error);
     }
 }
