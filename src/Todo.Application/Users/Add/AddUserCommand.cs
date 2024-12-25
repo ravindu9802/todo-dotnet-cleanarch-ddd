@@ -1,7 +1,6 @@
-﻿using MediatR;
+﻿using Todo.Application.Abstractions.Messaging;
 using Todo.Domain.Enums;
-using Todo.Domain.Primitives;
 
 namespace Todo.Application.Users.Add;
 
-public record AddUserCommand(string FirstName, string LastName, string Email, UserRole Role) : IRequest<Result<Guid>>;
+public record AddUserCommand(string FirstName, string LastName, string Email, UserRole Role) : ICommand<Guid>;

@@ -1,10 +1,10 @@
-﻿using MediatR;
+﻿using Todo.Application.Abstractions.Messaging;
 using Todo.Domain.Primitives;
 using Todo.Domain.Repositories;
 
 namespace Todo.Application.Todos.DeleteAll;
 
-internal class DeleteAllTodosCommandHandler : IRequestHandler<DeleteAllTodosCommand, Result>
+internal class DeleteAllTodosCommandHandler : ICommandHandler<DeleteAllTodosCommand>
 {
     private readonly ITodoRepository _todoRepository;
     private readonly ITodoUoW _uoW;

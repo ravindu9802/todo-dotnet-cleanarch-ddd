@@ -1,11 +1,12 @@
 ﻿using MassTransit;
 using MediatR;
+using Todo.Application.Abstractions.Messaging;
 using Todo.Domain.Primitives;
 using Todo.Domain.Repositories;
 
 namespace Todo.Application.Todos.Add;
 
-internal class AddTodoCommandHandler : IRequestHandler<AddTodoCommand, Result<Guid>>
+internal class AddTodoCommandHandler : ICommandHandler<AddTodoCommand, Guid>
 {
     private readonly ITodoRepository _repository;
     private readonly ITodoUoW _uoW;

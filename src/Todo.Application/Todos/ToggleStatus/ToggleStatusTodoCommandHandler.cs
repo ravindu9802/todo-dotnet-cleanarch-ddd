@@ -1,10 +1,10 @@
-﻿using MediatR;
+﻿using Todo.Application.Abstractions.Messaging;
 using Todo.Domain.Primitives;
 using Todo.Domain.Repositories;
 
 namespace Todo.Application.Todos.ToggleStatus;
 
-internal class ToggleStatusTodoCommandHandler : IRequestHandler<ToggleStatusTodoCommand, Result<bool>>
+internal class ToggleStatusTodoCommandHandler : ICommandHandler<ToggleStatusTodoCommand, bool>
 {
     private readonly ITodoRepository _todoRepository;
     private readonly ITodoUoW _uoW;

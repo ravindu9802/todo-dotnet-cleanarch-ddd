@@ -1,6 +1,5 @@
-﻿using MediatR;
-using Todo.Domain.Primitives;
+﻿using Todo.Application.Abstractions.Messaging;
 
 namespace Todo.Application.Todos.Delete;
 
-public record DeleteTodoCommand(Guid Id): IRequest<Result>;
+public record DeleteTodoCommand(Guid Id) : ICommand;

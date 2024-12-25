@@ -1,11 +1,11 @@
-﻿using MediatR;
+﻿using Todo.Application.Abstractions.Messaging;
 using Todo.Domain.Entities;
 using Todo.Domain.Primitives;
 using Todo.Domain.Repositories;
 
 namespace Todo.Application.Users.Add;
 
-internal class AddUserCommandHandler : IRequestHandler<AddUserCommand, Result<Guid>>
+internal class AddUserCommandHandler : ICommandHandler<AddUserCommand, Guid>
 {
     private readonly IUserUoW _uoW;
     private readonly IUserRepository _userRepository;

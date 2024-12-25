@@ -1,10 +1,10 @@
-﻿using MediatR;
+﻿using Todo.Application.Abstractions.Messaging;
 using Todo.Domain.Primitives;
 using Todo.Domain.Repositories;
 
 namespace Todo.Application.Todos.GetAll;
 
-internal class GetAllTodosQueryHandler : IRequestHandler<GetAllTodosQuery, Result<List<Domain.Entities.Todo>>>
+internal class GetAllTodosQueryHandler : IQueryHandler<GetAllTodosQuery, List<Domain.Entities.Todo>>
 {
     private readonly ITodoRepository _todoRepository;
 
