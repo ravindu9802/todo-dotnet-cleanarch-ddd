@@ -13,8 +13,8 @@ namespace Todo.Api.Controllers;
 [ApiController]
 public class TodosController : ControllerBase
 {
-    private readonly ISender _sender;
     private readonly IValidator<AddTodoRequest> _addTodoRequestValidator;
+    private readonly ISender _sender;
 
     public TodosController(ISender sender, IValidator<AddTodoRequest> addTodoRequestValidator)
     {
@@ -38,10 +38,7 @@ public class TodosController : ControllerBase
     {
         var validationResult = await _addTodoRequestValidator.ValidateAsync(todoRequest);
 
-        if (!validationResult.IsValid)
-        {
-            return BadRequest(new { validationError = validationResult.ToDictionary() });
-        }
+        if (!validationResult.IsValid) return BadRequest(new { validationError = validationResult.ToDictionary() });
 
         var command = new AddTodoCommand(todoRequest.Title, todoRequest.Description, todoRequest.UserId);
         var res = await _sender.Send(command);

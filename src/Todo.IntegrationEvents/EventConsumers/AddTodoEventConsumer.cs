@@ -15,9 +15,9 @@ internal class AddTodoEventConsumer : IConsumer<AddTodoEvent>
 
     public Task Consume(ConsumeContext<AddTodoEvent> context)
     {
-        _logger.LogInformation("Event occured 1. {Event}, {EventId}, {OccuredAtUtc}, {ConsumedAtUtc}", 
-            nameof(AddTodoEvent), 
-            context.Message.EventId, 
+        _logger.LogInformation("Event occured 1. {Event}, {EventId}, {OccuredAtUtc}, {ConsumedAtUtc}",
+            nameof(AddTodoEvent),
+            context.Message.EventId,
             context.Message.OccuredAtUtc,
             DateTime.UtcNow);
 

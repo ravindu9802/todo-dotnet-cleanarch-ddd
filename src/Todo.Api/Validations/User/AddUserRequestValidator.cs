@@ -1,5 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using FluentValidation;
+﻿using FluentValidation;
 using Todo.Application.Users.Add;
 
 namespace Todo.Api.Validations.User;
@@ -20,6 +19,5 @@ internal sealed class AddUserRequestValidator : AbstractValidator<AddUserRequest
 
         RuleFor(u => u.Role)
             .NotEmpty().WithMessage("Role is required.");
-
     }
 }

@@ -5,8 +5,8 @@ namespace Todo.Api.Authentication;
 
 public class JwtOptionsSetup : IConfigureOptions<JwtOptions>
 {
-    private readonly IConfiguration _configuration;
     private const string SectionName = "JwtConfig";
+    private readonly IConfiguration _configuration;
 
     public JwtOptionsSetup(IConfiguration configuration)
     {

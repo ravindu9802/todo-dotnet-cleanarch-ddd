@@ -7,8 +7,8 @@ namespace Todo.Application.Users.Login;
 
 internal class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, Result<string>>
 {
-    private readonly IUserRepository _repository;
     private readonly IJwtProvider _jwtProvider;
+    private readonly IUserRepository _repository;
 
     public UserLoginCommandHandler(IUserRepository repository, IJwtProvider jwtProvider)
     {
@@ -20,11 +20,13 @@ internal class UserLoginCommandHandler : IRequestHandler<UserLoginCommand, Resul
     {
         var user = await _repository.GetUserByEmailAsync(request.Email, cancellationToken);
 
-        if (user is null) return Result.Failure<string>(new Error("User.NotFound", $"Todo for email {request.Email} not found."));
+        if (user is null)
+            return Result.Failure<string>(new Error("User.NotFound", $"Todo for email {request.Email} not found."));
 
-        bool validLogin = user.Login(request.Email);
+        var validLogin = user.Login(request.Email);
 
-        if (!validLogin) return Result.Failure<string>(new Error("User.InvalidCredentials", "Invalid Email or Password."));
+        if (!validLogin)
+            return Result.Failure<string>(new Error("User.InvalidCredentials", "Invalid Email or Password."));
 
         var token = _jwtProvider.Generate(user);
 

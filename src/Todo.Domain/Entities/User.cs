@@ -9,7 +9,8 @@ public class User : Entity
     {
     }
 
-    private User(Guid id, string firstName, string lastName, string email, UserRole role, DateTime createdAtUtc) : base(id)
+    private User(Guid id, string firstName, string lastName, string email, UserRole role,
+        DateTime createdAtUtc) : base(id)
     {
         FirstName = firstName;
         LastName = lastName;
@@ -20,7 +21,7 @@ public class User : Entity
 
     public string FirstName { get; private set; }
     public string? LastName { get; private set; }
-    public string Email { get; private set; }
+    public string Email { get; }
     public UserRole Role { get; private set; }
     public DateTime CreatedAtUtc { get; private set; }
 
@@ -32,7 +33,7 @@ public class User : Entity
         if (string.IsNullOrWhiteSpace(email))
             return Result.Failure<User>(new Error("User.NullEmail", "Email cannot be empty."));
 
-        User user = new User(Guid.CreateVersion7(), firstName, lastName, email, role, DateTime.UtcNow);
+        var user = new User(Guid.CreateVersion7(), firstName, lastName, email, role, DateTime.UtcNow);
         return Result.Success(user);
     }
 

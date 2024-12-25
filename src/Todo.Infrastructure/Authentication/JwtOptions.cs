@@ -1,4 +1,5 @@
 ﻿namespace Todo.Infrastructure.Authentication;
+
 public class JwtOptions
 {
     public string Issuer { get; init; }

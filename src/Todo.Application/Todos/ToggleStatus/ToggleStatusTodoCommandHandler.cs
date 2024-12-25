@@ -18,7 +18,8 @@ internal class ToggleStatusTodoCommandHandler : ICommandHandler<ToggleStatusTodo
     public async Task<Result<bool>> Handle(ToggleStatusTodoCommand request, CancellationToken cancellationToken)
     {
         var todo = await _todoRepository.GetByIdAsync(request.Id, cancellationToken);
-        if (todo is null) return Result.Failure<bool>(new Error("Todo.NotFound", $"Todo for id {request.Id} not found."));
+        if (todo is null)
+            return Result.Failure<bool>(new Error("Todo.NotFound", $"Todo for id {request.Id} not found."));
 
         todo.ChangeStatus(request.IsCompleted);
         await _uoW.SaveChangesAsync(cancellationToken);

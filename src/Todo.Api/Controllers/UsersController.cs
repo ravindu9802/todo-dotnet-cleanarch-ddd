@@ -10,8 +10,8 @@ namespace Todo.Api.Controllers;
 [ApiController]
 public class UsersController : ControllerBase
 {
-    private readonly ISender _sender;
     private readonly IValidator<AddUserRequest> _addUserRequestValidator;
+    private readonly ISender _sender;
 
     public UsersController(ISender sender, IValidator<AddUserRequest> addUserRequestValidator)
     {
@@ -25,12 +25,10 @@ public class UsersController : ControllerBase
     {
         var validationResult = await _addUserRequestValidator.ValidateAsync(userRequest);
 
-        if (!validationResult.IsValid)
-        {
-            return BadRequest(new { validationError = validationResult.ToDictionary() });
-        }
+        if (!validationResult.IsValid) return BadRequest(new { validationError = validationResult.ToDictionary() });
 
-        var command = new AddUserCommand(userRequest.FirstName, userRequest.LastName, userRequest.Email, userRequest.Role);
+        var command = new AddUserCommand(userRequest.FirstName, userRequest.LastName, userRequest.Email,
+            userRequest.Role);
         var res = await _sender.Send(command);
         return res.IsSuccess ? Ok(res.Value) : BadRequest(res.Error);
     }

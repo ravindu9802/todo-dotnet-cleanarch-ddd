@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace Todo.Api.Authentication;
 
-public class AuthorizationPolicySetup: IConfigureNamedOptions<AuthorizationOptions>
+public class AuthorizationPolicySetup : IConfigureNamedOptions<AuthorizationOptions>
 {
     public void Configure(AuthorizationOptions options)
     {
@@ -12,10 +12,7 @@ public class AuthorizationPolicySetup: IConfigureNamedOptions<AuthorizationOptio
 
     public void Configure(string? name, AuthorizationOptions options)
     {
-        options.AddPolicy("AuthenticatedUser", policy =>
-        {
-            policy.RequireAuthenticatedUser();
-        });
+        options.AddPolicy("AuthenticatedUser", policy => { policy.RequireAuthenticatedUser(); });
 
         options.AddPolicy("DeletePolicy", policy =>
         {

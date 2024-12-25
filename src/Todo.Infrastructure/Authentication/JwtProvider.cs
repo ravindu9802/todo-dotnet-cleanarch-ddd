@@ -7,9 +7,11 @@ using Todo.Domain.Abstractions;
 using Todo.Domain.Entities;
 
 namespace Todo.Infrastructure.Authentication;
+
 internal class JwtProvider : IJwtProvider
 {
     private readonly JwtOptions _options;
+
     public JwtProvider(IOptions<JwtOptions> options)
     {
         _options = options.Value;
@@ -17,7 +19,8 @@ internal class JwtProvider : IJwtProvider
 
     public string Generate(User user)
     {
-        var claims = new Claim[]{
+        var claims = new Claim[]
+        {
             new(JwtRegisteredClaimNames.Sub, user.Id.ToString()),
             new(JwtRegisteredClaimNames.Name, user.Id.ToString()),
             new("role", user.Role.ToString().ToLower()),

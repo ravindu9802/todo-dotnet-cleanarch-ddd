@@ -26,9 +26,10 @@ public class Todo : Entity
 
     public static Result<Todo> Create(string title, string description, Guid userId)
     {
-        if (string.IsNullOrWhiteSpace(title)) return Result.Failure<Todo>(new Error("Todo.EmptyTitle","Title cannot be empty."));
+        if (string.IsNullOrWhiteSpace(title))
+            return Result.Failure<Todo>(new Error("Todo.EmptyTitle", "Title cannot be empty."));
 
-        Todo todo = new Todo(Guid.CreateVersion7(), title, description, false, userId, DateTime.UtcNow);
+        var todo = new Todo(Guid.CreateVersion7(), title, description, false, userId, DateTime.UtcNow);
         return Result.Success(todo);
     }
 

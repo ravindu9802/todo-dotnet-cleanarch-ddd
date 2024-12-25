@@ -31,8 +31,7 @@ builder.Services
     .InfrastructureLayerExtension(builder.Configuration);
 
 builder.Host
-    .UseSerilog((context, config) =>
-        { config.ReadFrom.Configuration(context.Configuration); });
+    .UseSerilog((context, config) => { config.ReadFrom.Configuration(context.Configuration); });
 
 builder.Services
     .AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingPipelineBehaviour<,>));
