@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Todo.Application.Todos.Add;
@@ -13,10 +14,12 @@ namespace Todo.Api.Controllers;
 public class TodosController : ControllerBase
 {
     private readonly ISender _sender;
+    private readonly IValidator<AddTodoRequest> _addTodoRequestValidator;
 
-    public TodosController(ISender sender)
+    public TodosController(ISender sender, IValidator<AddTodoRequest> addTodoRequestValidator)
     {
         _sender = sender;
+        _addTodoRequestValidator = addTodoRequestValidator;
     }
 
     [Authorize]
@@ -33,6 +36,13 @@ public class TodosController : ControllerBase
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] AddTodoRequest todoRequest)
     {
+        var validationResult = await _addTodoRequestValidator.ValidateAsync(todoRequest);
+
+        if (!validationResult.IsValid)
+        {
+            return BadRequest(new { validationError = validationResult.ToDictionary() });
+        }
+
         var command = new AddTodoCommand(todoRequest.Title, todoRequest.Description, todoRequest.UserId);
         var res = await _sender.Send(command);
         return res.IsSuccess ? Ok(res.Value) : BadRequest(res.Error);
@@ -52,7 +62,7 @@ public class TodosController : ControllerBase
     [Authorize(Policy = "DeletePolicy")]
     [HttpDelete]
     [Route("{todoId}")]
-    public async Task<IActionResult> ChangeStatus([FromRoute] Guid todoId)
+    public async Task<IActionResult> Delete([FromRoute] Guid todoId)
     {
         var command = new DeleteTodoCommand(todoId);
         var res = await _sender.Send(command);

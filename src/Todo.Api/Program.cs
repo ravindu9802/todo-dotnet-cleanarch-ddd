@@ -1,3 +1,4 @@
+using FluentValidation;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Scalar.AspNetCore;
@@ -45,6 +46,9 @@ builder.Services
 
 builder.Services.ConfigureOptions<AuthorizationPolicySetup>();
 builder.Services.AddAuthorization();
+
+// Register fluent validation from assembly
+builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly, includeInternalTypes: true);
 
 var app = builder.Build();
 
