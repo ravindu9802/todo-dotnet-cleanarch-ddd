@@ -4,9 +4,7 @@ namespace Todo.Domain.Entities;
 
 public class Todo : Entity
 {
-    private Todo(Guid id) : base(id)
-    {
-    }
+    private Todo() { }
 
     private Todo(Guid id, string title, string description, bool isCompleted, Guid userId,
         DateTime createdAtUtc) : base(id)

@@ -4,9 +4,7 @@ namespace Todo.Domain.Entities;
 
 public class TodoGroup : AggregateRoot
 {
-    private TodoGroup(Guid id) : base(id)
-    {
-    }
+    private TodoGroup() { }
 
     private TodoGroup(Guid id, string groupTitle, List<Todo> todos, DateTime createdAtUtc) : base(id)
     {

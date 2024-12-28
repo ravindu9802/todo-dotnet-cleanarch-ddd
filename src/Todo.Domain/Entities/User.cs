@@ -5,9 +5,7 @@ namespace Todo.Domain.Entities;
 
 public class User : Entity
 {
-    private User(Guid id) : base(id)
-    {
-    }
+    private User() { }
 
     private User(Guid id, string firstName, string lastName, string email, UserRole role,
         DateTime createdAtUtc) : base(id)

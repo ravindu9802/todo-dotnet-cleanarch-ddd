@@ -19,7 +19,7 @@ Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-co
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{191735E9-4F4B-4C0E-A430-A1BCF5ECA520}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.ArchitectureTest", "..\Todo.ArchitectureTest\Todo.ArchitectureTest.csproj", "{4A584D03-B51E-4FEA-9C85-6B0DB8741CBE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Todo.ArchitectureTests", "..\Todo.ArchitectureTest\Todo.ArchitectureTests.csproj", "{4A584D03-B51E-4FEA-9C85-6B0DB8741CBE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

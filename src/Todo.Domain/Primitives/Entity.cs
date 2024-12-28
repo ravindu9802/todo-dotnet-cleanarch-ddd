@@ -2,6 +2,9 @@
 
 public abstract class Entity : IEquatable<Entity>
 {
+    // for serialization ease of ORMs like EFCore
+    protected Entity() { }
+
     protected Entity(Guid id)
     {
         Id = id;
