@@ -1,5 +1,4 @@
-﻿using System.Net;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 
 namespace Todo.Api.Middleware;
 
@@ -18,21 +17,45 @@ public class ExceptionHandlingMiddleware : IMiddleware
         {
             await next(context);
         }
-        catch (Exception e)
+        catch (Exception exception)
         {
-            _logger.LogError(e, e.Message);
+            _logger.LogError(exception, "Exception occured: {Message}", exception.Message);
 
-            context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+            var exceptionDetails = GetExceptionDetails(exception);
 
             ProblemDetails details = new()
             {
-                Title = "Internal server error",
-                Type = "https://tools.ietf.org/html/rfc7231#section-6.6.1",
-                Status = context.Response.StatusCode,
-                Detail = e.Message,
+                Title = exceptionDetails.Title,
+                Type = exceptionDetails.Type,
+                Status = exceptionDetails.Status,
+                Detail = exceptionDetails.Detail,
             };
 
+            if (exceptionDetails.Errors is not null)
+                details.Extensions.Add("errors", exceptionDetails.Errors);
+
+            context.Response.StatusCode = exceptionDetails.Status;
             await context.Response.WriteAsJsonAsync(details);
         }
     }
+
+    private static ExceptionDetails GetExceptionDetails(Exception exception)
+    {
+        return exception switch
+        {
+            _ => new ExceptionDetails(
+                Status: StatusCodes.Status500InternalServerError,
+                Type: "InternalServerError",
+                Title: "Internal server error",
+                Detail: exception.Message,
+                Errors: null)
+        };
+    }
+
+    internal record ExceptionDetails(
+        int Status,
+        string Type,
+        string Title,
+        string Detail,
+        IEnumerable<object>? Errors);
 }
