@@ -12,8 +12,8 @@ using Todo.Infrastructure.Persistence;
 namespace Todo.Infrastructure.Migrations.Users
 {
     [DbContext(typeof(UserDbContext))]
-    [Migration("20241222194443_Update_User_for_JWT")]
-    partial class Update_User_for_JWT
+    [Migration("20241228190138_Init_Users")]
+    partial class Init_Users
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
