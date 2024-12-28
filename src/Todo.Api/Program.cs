@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Scalar.AspNetCore;
 using Serilog;
 using Todo.Api.Authentication;
+using Todo.Api.Middleware;
 using Todo.Api.Migrations;
 using Todo.Application.Behaviours;
 using Todo.Application.Extensions;
@@ -49,6 +50,9 @@ builder.Services.AddAuthorization();
 // Register fluent validation from assembly
 builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly, includeInternalTypes: true);
 
+// Register exception handling middleware
+builder.Services.AddTransient<ExceptionHandlingMiddleware>();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -72,6 +76,8 @@ app.UseCors("AllowAny");
 app.UseAuthentication();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
