@@ -32,5 +32,13 @@ services:
         - ACCEPT_EULA=Y
     ports:
         - "5341:5341" 
-        - "5001:80" 
+        - "5001:80"
+  
+  todo.redis:
+    image:  redis:alpine
+    container_name: todo.redis
+    volumes:
+        - "./.containers/cache:/data"
+    ports:
+        - "6000:5432"
   

@@ -17,7 +17,8 @@ internal class TodoRepository : ITodoRepository
         CancellationToken cancellationToken = default)
     {
         var todo = await _context.Todos
-            .FindAsync(id, cancellationToken);
+            .FirstOrDefaultAsync(t => t.Id == id, cancellationToken);
+
         if (todo is null) return false;
 
         todo.ChangeStatus(isCompleted);
@@ -26,7 +27,10 @@ internal class TodoRepository : ITodoRepository
 
     public async Task<bool> DeleteAsync(Guid id, CancellationToken cancellationToken)
     {
-        var todo = await _context.Todos.Where(t => t.Id == id).FirstOrDefaultAsync(cancellationToken);
+        var todo = await _context.Todos.
+            Where(t => t.Id == id)
+            .FirstOrDefaultAsync(cancellationToken);
+
         if (todo is null) return false;
 
         _context.Todos.Remove(todo);
